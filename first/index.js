@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const OpenAIApi = require("openai").OpenAIApi;
 const Configuration = require("openai").Configuration;
@@ -9,23 +9,18 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
-  Animal: Cat
-  Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-  Animal: Dog
-  Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-  Animal: ${capitalizedAnimal}
-  Names:`;
+function generatePrompt(commandLineTool) {
+  const capitalizedcommandLineTool =
+    commandLineTool[0].toUpperCase() + commandLineTool.slice(1).toLowerCase();
+  return `What are the basic commands for using the '${capitalizedcommandLineTool}' command line tool?"`;
 }
 
 (async () => {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: generatePrompt("cat"),
+    prompt: generatePrompt("less"),
     temperature: 0.6,
+    max_tokens: 2048,
   });
 
   console.log(completion.data.choices[0].text);
